@@ -1,7 +1,8 @@
 import { Button } from '@material-ui/core';
 import React, { MutableRefObject, useState } from 'react';
+import { useAuthState } from 'react-firebase-hooks/auth';
 import styled from 'styled-components';
-import { db, firebase } from '../firebase';
+import { auth, db, firebase } from '../firebase';
 
 interface IChatInput {
   chatRef: MutableRefObject<HTMLDivElement | null>;
@@ -11,6 +12,7 @@ interface IChatInput {
 
 function ChatInput({ channelId, channelName, chatRef }: IChatInput) {
   const [input, setInput] = useState('');
+  const [user] = useAuthState(auth);
 
   const sendMessage = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -18,8 +20,9 @@ function ChatInput({ channelId, channelName, chatRef }: IChatInput) {
     db.collection('rooms').doc(channelId).collection('messages').add({
       message: input,
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      user: 'chelsea',
-      userImage: `https://upload.wikimedia.org/wikipedia/ko/thumb/a/ae/Chelsea_FC_Logo.svg/209px-Chelsea_FC_Logo.svg.png`,
+      user: user?.displayName,
+      userImage: user?.photoURL,
+      // userImage: `https://upload.wikimedia.org/wikipedia/ko/thumb/a/ae/Chelsea_FC_Logo.svg/209px-Chelsea_FC_Logo.svg.png`,
     });
 
     if (chatRef.current) {

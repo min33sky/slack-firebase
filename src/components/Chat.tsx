@@ -40,35 +40,42 @@ function Chat() {
 
   return (
     <ChatContainer>
-      <>
-        <Header>
-          <HeaderLeft>
-            <h4>
-              <strong>#{roomDetails.data() && roomDetails.data()!.name}</strong>
-            </h4>
-            <StarBorderOutlinedIcon />
-          </HeaderLeft>
+      {roomDetails && roomMessages && (
+        <>
+          <Header>
+            <HeaderLeft>
+              <h4>
+                <strong>#{roomDetails.data() && roomDetails.data()!.name}</strong>
+              </h4>
+              <StarBorderOutlinedIcon />
+            </HeaderLeft>
 
-          <HeaderRight>
-            <p>
-              <InfoOutlinedIcon /> Details
-            </p>
-          </HeaderRight>
-        </Header>
+            <HeaderRight>
+              <p>
+                <InfoOutlinedIcon /> Details
+              </p>
+            </HeaderRight>
+          </Header>
 
-        <ChatMessages>
-          {roomMessages?.docs.map((doc) => {
-            const { message, timestamp, user, userImage } = doc.data();
-            console.log('채팅 내역: ', message, timestamp, user, userImage);
-            return (
-              <Message message={message} timestamp={timestamp} user={user} userImage={userImage} />
-            );
-          })}
-          <ChatBottom ref={chatRef} />
-        </ChatMessages>
+          <ChatMessages>
+            {roomMessages?.docs.map((doc) => {
+              const { message, timestamp, user, userImage } = doc.data();
+              console.log('채팅 내역: ', message, timestamp, user, userImage);
+              return (
+                <Message
+                  message={message}
+                  timestamp={timestamp}
+                  user={user}
+                  userImage={userImage}
+                />
+              );
+            })}
+            <ChatBottom ref={chatRef} />
+          </ChatMessages>
 
-        <ChatInput chatRef={chatRef} channelName={roomDetails?.data()!.name} channelId={roomId} />
-      </>
+          <ChatInput chatRef={chatRef} channelName={roomDetails?.data()!.name} channelId={roomId} />
+        </>
+      )}
     </ChatContainer>
   );
 }
