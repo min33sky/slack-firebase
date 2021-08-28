@@ -2,11 +2,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../app/store';
 
 export interface AppState {
-  roomId: string | null;
+  roomId: string | undefined;
 }
 
 const initialState: AppState = {
-  roomId: null,
+  roomId: undefined,
 };
 
 export const appSlice = createSlice({
